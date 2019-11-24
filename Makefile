@@ -22,7 +22,7 @@ check:
 	@${LUACHECK} dwark/lpeg/*.lua
 
 install:
-	@luarocks --local make dwark.lpeg-scm-0.rockspec
+	@luarocks --local make dwark_lpeg-scm-0.rockspec
 
 uninstall:
 	@luarocks --local remove dwark.lpeg
