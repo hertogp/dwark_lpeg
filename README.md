@@ -1,7 +1,9 @@
 ---
+<!--
 title: dwark.lpeg
 topic: matching and parsing
 author: git.hertogp@gmail.com
+-->
 ...
 
 # dwark.lpeg
