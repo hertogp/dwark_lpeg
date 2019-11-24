@@ -1,11 +1,3 @@
----
-<!--
-title: dwark.lpeg
-topic: matching and parsing
-author: git.hertogp@gmail.com
--->
-...
-
 # dwark.lpeg
 
 Another set of lpeg patterns, see:
@@ -33,7 +25,7 @@ Another set of lpeg patterns, see:
 ## dwark.lpeg.init
 
 The main module provides the core ABNF rules from
-[`*rfc5234*`](http://www.rfc-editor.org/rfc/rfc5234.html#appendix-B)'s appendix
+[*`rfc5234`*](http://www.rfc-editor.org/rfc/rfc5234.html#appendix-B)'s appendix
 B:
 
 - `ALPHA`, matches letters
