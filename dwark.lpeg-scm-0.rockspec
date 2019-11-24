@@ -1,11 +1,11 @@
 package = "dwark.lpeg"
 version = "scm-0"
 source = {
-   url = "*** please add URL for source tarball, zip or repository here ***"
+   url = "https://github.com/hertogp/dwark_lpeg.git"
 }
 description = {
    detailed = [[ Another set of lpeg patterns ]],
-   homepage = "*** please enter a project homepage ***",
+   homepage = "https://github.com/hertogp/dwark_lpeg.git",
    license = "MIT"
 }
 dependencies = {
