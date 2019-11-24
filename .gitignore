@@ -1,3 +1,6 @@
+# Compiled documentation
+*.pdf
+
 # Compiled Lua sources
 luac.out
 
