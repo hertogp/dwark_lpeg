@@ -1,8 +1,10 @@
 ---
 title: dwark.lpeg
 topic: matching and parsing
-author: git.padh@github.com
+author: git.hertogp@gmail.com
 ...
+
+# dwark.lpeg
 
 Another set of lpeg patterns, see:
 - [*`lpeg`*](http://www.inf.puc-rio.br/~roberto/lpeg/)
@@ -14,86 +16,119 @@ Another set of lpeg patterns, see:
 - [*`lpeg-patterns`*](https://github.com/daurnimator/lpeg_patterns)
   another large collection of lpeg patterns, by `daurnimator`
 
-# dwark.lpeg
+## install
 
-The 'core' of the set of lpeg patterns, it:
-
-- pulls in lpeg's [*`locale`*](phttp://www.inf.puc-rio.br/~roberto/lpeg/#basic)
-    - `alnum`, `alpha`, `cntrl`, `digit`, `graph`, `lower`,
-    - `print`, `punct`, `space`, `upper`, and `xdigit`
-
-- and the lpeg [*`functions`*](http://www.inf.puc-rio.br/~roberto/lpeg/#intro)
-    - `P` to match a string of `n`-characters
-    - `S` to match a `set` of characters (eg S", ")
-    - `R` to match a `range` of characters (eg R"09")
-    - `B` to match `behind` current position
-
-- and the lpeg
-  [*`captures`*](http://www.inf.puc-rio.br/~roberto/lpeg/#captures)
-    - `C(p)` -> the match for `p` and all its captures
-    - `Carg(n)` -> the value of the `n`-th argument to p:match()
-    - `Cb(name)` -> the values of a previous group capture `name`
-    - `Cc(values)` -> the literal values given
-    - `Cf(p, func)` -> the `folding` of what `p` captures
-    - `Cg(p [, name])` -> 
-    - `Cp()`
-    - `Cs(p)`
-    - `Ct(p)`
-    - `Cmt(p, func)`
-
-- provides ABNF patterns
-    - `ALPHA`, matches letters
-    - `BIT`, matches either 0 or 1
-    - `CHAR`, matches any 7bit character except `NULL`
-    - `CR`, matches carriage return
-    - `LF`, matches a line feed
-    - `CRLF`, matches carriage return, line feed OR just line feed
-    - `CTRL`, matches control chars 0-31 and 127
-    - `DIGIT`, matches 0-9
-    - `DQUOTE`, matches '"'
-    - `HEXDIG`, matches a hexadecimal character
-    - `HTAB`, matches horizontal tab
-    - `OCTET`, matches any 8bit character data
-    - `SP`, matches a space
-    - `VCHAR`, matches visible characters (33-126)
-    - `PCHAR`, matches printable characters (32-126, which includes space)
-    - `WSP`, matches a single whitespace (space or tab)
-    - `LWSP`, matches 1+ linear whitespace (space, tab, cr, lf)
-
-- functions to create patterns
-    - `mc(p)`, capture `p`'s match result
-    - `mj`, json-decode `p`'s match result
-    - `mk`, captures a pattern's result and inserts literal key before
-    - `mkv`, insert literal key before `p`'s value
-    - `mt`, match and capture key|sep|val patterns into a table
-    - `mlist`, same but for key|sep|val|sep? patterns
-    - `ts`, split a string on a pattern
-    - `split`, same
-    - `nocase`, case-insensitive match of some string
-    - `endswith`, matches 1+ time pattern p1, as long as it ends with p2
+```bash
+- cd <some-dir>
+- git clone https://github.com/hertogp/dwark_lpeg.git
+- cd root dir
+- make test     # optional, if `busted` is installed
+- make check    # optional, if `luacheck` is installed
+- luarocks --local make dwark.lpeg-scm-0.rockspec
+```
 
 
-Usage:
+## dwark.lpeg.init
+
+The main module provides the core ABNF rules from
+[`*rfc5234*`](http://www.rfc-editor.org/rfc/rfc5234.html#appendix-B)'s appendix
+B:
+
+- `ALPHA`, matches letters
+- `BIT`, matches either 0 or 1
+- `CHAR`, matches any 7bit character except `NULL`
+- `CR`, matches carriage return
+- `LF`, matches a line feed
+- `CRLF`, matches carriage return, line feed OR just line feed
+- `CTRL`, matches control chars 0-31 and 127
+- `DIGIT`, matches 0-9
+- `DQUOTE`, matches '"'
+- `HEXDIG`, matches a hexadecimal character
+- `HTAB`, matches horizontal tab
+- `OCTET`, matches any 8bit character data
+- `SP`, matches a space
+- `VCHAR`, matches visible characters (33-126)
+- `PCHAR`, matches printable characters (32-126, which includes space)
+- `WSP`, matches a single whitespace (space or tab)
+- `LWSP`, matches 1+ linear whitespace (space, tab, cr, lf)
+
+It also pulls in all of lpeg's functions (like `lpeg.C`) & lpeg's locales and
+provides some functions to help create patterns
+
+- `mc(p)`, capture `p`'s match result
+- `mj(p)`, json-decode `p`'s match result
+- `mk(k, p)`, captures `p`'s match result and prepends key `k` i/t capture
+- `mkv(k,v)`, prepends key `k` to a captured value `v`
+- `mt(k,a,v)`, match and capture `key|assign|val` patterns into a k,v-table
+- `mlist(k,a,v,s)`, same but for `key|assign|val|sep?` patterns
+- `ts`, split a string on a pattern or a specific string
+- `split`, same
+- `nocase`, case-insensitive match of some string
+- `endswith`, matches 1+ time pattern p1, as long as it ends with p2
+
+Example:
+
 ```lua
 local core = require "dwark.lpeg"
+local Cf, Ct, P, mk = core.Cf, core.Ct, core.P, core.mk
+local p = Cf(Ct"" * P"%" * mk("facility", (1-P"-")^1)
+                  * P"-" * mk("severity", (1-P"-")^1)
+                  * P"-" * mk("mnemonic", (1-P":")^1), rawset)
+local t = p:match("%SYS-5-CONFIG_I:")
+
+assert(t.facility == "SYS")       --> true
+assert(t.severity == "5")         --> true
+assert(t.mnemonic == "CONFIG_I")  --> true
 ```
 
 ## dwark.lpeg.spf
 
-- parse an SPF record
-    - `parts`, parses an SPF record into a list of terms
-- SPF record syntax check
-    - `record`, matches a syntactily correct SPF record
-- match parts of an SPF record
-    - `version`, matches an SPF version term
-    - `mechanism`, matches an SPF mechanism
-    - `modifier`, matches an SPF modifier
-    - `mtokens`, matches tokens in a macro-string (returns a list)
-    - `dnsname`, matches a domain name
-    - `dnslabel`, matches a domain name label
-    - `toplabel`, matches a top level label with restrictions
-- pulls in `dwark.lpeg` as well
-    - `core` is namespace for `dwark.lpeg`
+Patterns to match and parse SPF records
+
+- `record`, returns a list of parsed SPF terms plus the ending position
+- `parts`, just splits on whitespace
+
+and some patterns to match parts of an SPF record
+
+- `version`, matches an SPF version term
+- `mechanism`, matches an SPF mechanism
+- `modifier`, matches an SPF modifier
+- `mtokens`, matches tokens in a macro-string (returns a list)
+- `dnsname`, matches a domain name
+- `dnslabel`, matches a domain name label
+- `toplabel`, matches a top level label with restrictions
+
+Example
+
+```lua
+spf = require "dwark.lpeg.spf"
+
+function check(txt)
+    local t, p = spf.record:match(txt)
+    if p <= #txt then
+        print("-- invalid SPF record: error at:", txt:sub(p))
+    else
+        for k,v in ipairs(t) do
+            print("--", k, json.encode(v))
+        end
+    end
+end
+
+check("v=SPF1 ip4:10.10.10.0/24 include:example.com ~all")
+-- 1 ["v","SPF","1"]
+-- 2 ["ip4","+","10.10.10.0\/24"]
+-- 3 ["include","+","example.com"]
+-- 4 ["all","~"]
+
+
+check("v=spf ip4:10.10/15 include:example.com ~all")
+-- invalid SPF record: error at:   ip4:10.10/15 include:example.com ~all
+
+
+check("v=spf2 a:example.com/24//128")
+-- 1 ["v","spf","2"]
+-- 2 ["a","+","example.com","\/24","\/\/128"]
+```
 
 ## dwark.lpeg.ip
 
