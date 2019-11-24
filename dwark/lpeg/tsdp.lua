@@ -1,6 +1,6 @@
 --
 -------------------------------------------------------------------------------
---         File:  dwark.lpeg.tsdp.lua
+--         File:  tsdp.lua
 --
 --        Usage:  local tsdp = require"dwark.lpeg.tsdp".tdsp
 --                tsdp:match(line) -- from some log.tdsp file
@@ -50,10 +50,6 @@ local value = (1 - space)^1
 local restofline = (1-S"\r\n")^0
 
 --[[ tsdp pattern ]]
-local function mynumber(s)
-  print(">>", s)
-  return tonumber(s)
-end
 
 return Cf(  Ct""
           * mkv("tstamp", number/tonumber) * space^1

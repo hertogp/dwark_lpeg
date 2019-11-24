@@ -1,6 +1,6 @@
 --
 ------------------------------------------------------------------------------
---         File:  dwark.lpeg.spf.lua
+--         File:  spf.lua
 --
 --        Usage:  local spfp = require "dwark.lpeg.spf"
 --

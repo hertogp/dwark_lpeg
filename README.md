@@ -1,13 +1,11 @@
 # dwark.lpeg
 
-Another set of lpeg patterns, see:
-- [*`lpeg`*](http://www.inf.puc-rio.br/~roberto/lpeg/)
-  Parsing Expression Grammars for Lua, version 1.0
-
-- [*`lpeg-parsers`*](https://github.com/spc476/LPeg-Parsers)
+Another set of [*lpeg*](http://www.inf.puc-rio.br/~roberto/lpeg/) patterns,
+inspired by:
+- [*lpeg-parsers*](https://github.com/spc476/LPeg-Parsers)
   an extensive collection of lpeg parsers, by `spc476`
 
-- [*`lpeg-patterns`*](https://github.com/daurnimator/lpeg_patterns)
+- [*lpeg-patterns*](https://github.com/daurnimator/lpeg_patterns)
   another large collection of lpeg patterns, by `daurnimator`
 
 ## install
@@ -25,7 +23,7 @@ Another set of lpeg patterns, see:
 ## dwark.lpeg.init
 
 The main module provides the core ABNF rules from
-[*`rfc5234`*](http://www.rfc-editor.org/rfc/rfc5234.html#appendix-B)'s appendix
+[*rfc5234*](http://www.rfc-editor.org/rfc/rfc5234.html#appendix-B)'s appendix
 B:
 
 - `ALPHA`, matches letters

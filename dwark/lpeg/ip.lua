@@ -55,10 +55,6 @@ local pfx4 = P"3" * R"02"                             -- 30-32
 
 local net4 = ipv4 * P"/" * pfx4
 
-local amv4 = Cg( C(ipv4)                              -- address, mask v4
-                 * ((P"/" * (pfx4/tonumber)) + Cc(32))
-                 ) * eos
-
 --[[ IPv6 ]]
 
 local h16 = core.abnf.HEXDIG * core.abnf.HEXDIG^-3    -- 1-4 hexadecimals
