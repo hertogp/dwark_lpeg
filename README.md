@@ -11,12 +11,12 @@ inspired by:
 ## install
 
 ```bash
-- cd <some-dir>
+- cd somewhere
 - git clone https://github.com/hertogp/dwark_lpeg.git
-- cd root dir
+- cd dwark_lpeg
 - make test     # optional, if `busted` is installed
 - make check    # optional, if `luacheck` is installed
-- luarocks --local make dwark.lpeg-scm-0.rockspec
+- make install  # runs luarocks --local make dwark.lpeg-scm-0.rockspec
 ```
 
 
