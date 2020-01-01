@@ -1,5 +1,5 @@
 # dwark.lpeg
-
+IMAGINE=~/dev/imagine/pandoc_imagine.py
 BUSTED=`which busted`
 LUACHECK=`which luacheck`
 LUAVERSION :=$(shell lua -e "print(_VERSION:match('^%S+%s+(%S+)'))")
@@ -27,3 +27,6 @@ install:
 uninstall:
 	@luarocks --local remove dwark.lpeg
 
+readme:
+	@pandoc --filter $(IMAGINE) -f markdown -t gfm -o README.md doc/_readme.md
+	@pandoc --filter $(IMAGINE) -f gfm -o doc/README.pdf README.md

@@ -1,5 +1,7 @@
 # Compiled documentation
 *.pdf
+pd-images/*
+doc/pd-images/
 
 # Compiled Lua sources
 luac.out
