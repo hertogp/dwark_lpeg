@@ -5,13 +5,13 @@ LUACHECK=`which luacheck`
 LUAVERSION :=$(shell lua -e "print(_VERSION:match('^%S+%s+(%S+)'))")
 
 help:
-	@echo "make target     : what it does:"
-	@echo "----------------:------------------------------------------"
-	@echo "make test       : runs busted on this directory"
-	@echo "make check      : runs luacheck on all Lua files"
-	@echo "make install    : runs luarocks --local to install dwark.lpeg"
-	@echo "make uninstall  : runs luarocks --local to remove dwark.lpeg"
-	@echo "make help       : shows this message."
+	@echo "make targets:"
+	@echo "- test       : runs busted on this directory"
+	@echo "- check      : runs luacheck on all Lua files"
+	@echo "- install    : runs luarocks --local to install dwark.lpegs"
+	@echo "- uninstall  : runs luarocks --local to remove dwark.lpegs"
+	@echo "- help       : shows this message."
+	@echo "- readme     : convert doc/_readme.md to README.md
 	@echo "----------------:------------------------------------------"
 	@echo "Lua version     : ${LUAVERSION}"
 
@@ -22,10 +22,10 @@ check:
 	@${LUACHECK} dwark/lpeg/*.lua
 
 install:
-	@luarocks --local make dwark_lpeg-scm-0.rockspec
+	@luarocks --local make dwark-lpegs-scm-0.rockspec
 
 uninstall:
-	@luarocks --local remove dwark.lpeg
+	@luarocks --local remove dwark.lpegs
 
 readme:
 	@pandoc --filter $(IMAGINE) -f markdown -t gfm -o README.md doc/_readme.md
